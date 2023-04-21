@@ -49,30 +49,31 @@
 
     const compareRankings = async () => {
       if (eventCode) {
-       const eventData = await fetchEventData(eventCode);
-       console.log({eventData})
-
+        const eventData = await fetchEventData(eventCode);
+        console.log({ eventData });
+    
         if (eventData) {
           const teamStatus = eventData[`frc${teamNumber}`];
           const sortOrderInfo = teamStatus.qual.sort_order_info;
           const teamSortOrders = teamStatus.qual.ranking.sort_orders;
-
+    
           const comparisonResults: any[] = [];
-
+    
           sortOrderInfo.forEach((criteria: any, index: number) => {
             let rank = 1;
-            for (const otherTeamStatus of Object.values(eventData)) {
+            for (const otherTeamStatus of Object.values(eventData) as any[]) {
               if (otherTeamStatus.qual.ranking.sort_orders[index] > teamSortOrders[index]) {
                 rank++;
               }
             }
             comparisonResults.push({ name: criteria.name, rank });
           });
-
+    
           setComparisonData(comparisonResults);
         }
       }
     };
+    
 
     const renderComparison = () => {
       if (comparisonData) {
